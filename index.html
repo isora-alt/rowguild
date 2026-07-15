@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tticc Community Dashboard - ROW Guild</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f1f5f9; /* Slate 100 */
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Header Section -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-shield-cat text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Tticc Channel - ROW Guild</h1>
+                    <p class="text-xs text-slate-400">ระบบจัดการรายชื่อและคัดกรองปาร์ตี้ (Sv.Orc Hero)</p>
+                </div>
+            </div>
+            
+            <!-- Search Quick Tool -->
+            <div class="w-full sm:w-72 relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="ค้นหาชื่อผู้เล่น / อาชีพ / คนในตี้..." 
+                    class="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all placeholder:text-slate-500">
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+        
+        <!-- 1. Overview Cards (ข้อมูลสรุปจาก Excel) -->
+        <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Card 1 -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-4 rounded-2xl flex items-center gap-3 hover:border-slate-600 transition-all">
+                <div class="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400">
+                    <i class="fa-solid fa-users text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">สมาชิกทั้งหมด</p>
+                    <p class="text-xl font-bold text-white mt-0.5">96 <span class="text-xs font-normal text-slate-400">คน</span></p>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-4 rounded-2xl flex items-center gap-3 hover:border-slate-600 transition-all">
+                <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
+                    <i class="fa-solid fa-user-group text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">จัดปาร์ตี้แล้ว</p>
+                    <p class="text-xl font-bold text-white mt-0.5">38 <span class="text-xs font-normal text-slate-400">คน</span></p>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-4 rounded-2xl flex items-center gap-3 hover:border-slate-600 transition-all">
+                <div class="p-2.5 rounded-xl bg-rose-500/10 text-rose-400">
+                    <i class="fa-solid fa-user-slash text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">กำลังหาตี้ (ว่างงาน)</p>
+                    <p class="text-xl font-bold text-white mt-0.5">58 <span class="text-xs font-normal text-slate-400">คน</span></p>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-4 rounded-2xl flex items-center gap-3 hover:border-slate-600 transition-all">
+                <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400">
+                    <i class="fa-solid fa-gem text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">สมาชิกระดับ VIP</p>
+                    <p class="text-xl font-bold text-white mt-0.5">20 <span class="text-xs font-normal text-slate-400">คน</span></p>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-4 rounded-2xl flex items-center gap-3 hover:border-slate-600 transition-all col-span-2 lg:col-span-1">
+                <div class="p-2.5 rounded-xl bg-slate-500/10 text-slate-400">
+                    <i class="fa-solid fa-question text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">ยังไม่เลือกอาชีพ (?)</p>
+                    <p class="text-xl font-bold text-white mt-0.5">19 <span class="text-xs font-normal text-slate-400">คน</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Matchmaking Section (ผู้เล่นที่ยังไม่มีปาร์ตี้แยกตามโรลหลัก) -->
+        <section class="bg-slate-800/30 border border-slate-800 rounded-2xl p-6">
+            <div class="flex items-center gap-2 mb-6">
+                <i class="fa-solid fa-bullhorn text-indigo-400"></i>
+                <h2 class="text-lg font-semibold text-white">กระดานจับคู่หาตี้ (ผู้เล่นว่างงานแยกตามตำแหน่ง)</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                
+                <!-- Frontline & Melee Box -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
+                    <div class="flex items-center gap-2 text-rose-400 font-medium mb-3 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h3>Frontline / Melee (13)</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Azery (ไนท์)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Mume (แอส)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">KorMob (ไนท์)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">MinaMino (พ่อค้า)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">SuttxN (แอส)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Tg (ไนท์)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Gaster (ปืนสั้น)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">mP (แอส)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Stylish (แอส)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">FLUKEYY (พ่อค้า)</span>
+                    </div>
+                </div>
+
+                <!-- Ranged & Magic Box -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
+                    <div class="flex items-center gap-2 text-cyan-400 font-medium mb-3 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-wand-sparkles"></i>
+                        <h3>Ranged / Magic (20)</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Chainoi (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Dr.int (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Thanayut37 (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Pretty_bank (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">พ่อเดช (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Vivia (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">YURU (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Serein (ปืน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Soymilk (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Asixz (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">พร้อมแพนด้า (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Dion (ปืน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">MarkZa (ปืน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Zeztz (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">six-six (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">56 (วิ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">FrozenKiss (ฮัน)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">FATBOY (ฮัน)</span>
+                    </div>
+                </div>
+
+                <!-- Healer & Support Box -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
+                    <div class="flex items-center gap-2 text-emerald-400 font-medium mb-3 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <h3>Supports / Healers (18)</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">เชฟ (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">18ID (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Winter (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Mechockx (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">BunBun (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Zulu (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">ไก่ทอดเกาหลี (ดรูอิด)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">MaLio (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Nepjuneee (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">BornAgain (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">malinahee (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">ICEx2 (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">Justmoment (พระ)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">NobOdyX (ดรูอิด)</span>
+                        <span class="px-2 py-1 bg-slate-800 rounded text-slate-300">บุทด้า (พระ)</span>
+                    </div>
+                </div>
+
+                <!-- Undecided Box -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
+                    <div class="flex items-center gap-2 text-slate-400 font-medium mb-3 border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-question-circle"></i>
+                        <h3>ยังไม่เลือกอาชีพ (14)</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">HAZE</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">Marbelz</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">CTYz</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">Freelancer</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">PieR2</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">Showstopper</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">Radisyl</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">บอท</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">เบิร์นฮิมฮี</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">KANOMBANK</span>
+                        <span class="px-2 py-1 bg-slate-850 border border-slate-800 rounded text-slate-400">ณิชชา</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. Main Data Table -->
+        <section class="bg-slate-800/30 border border-slate-800 rounded-2xl overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-400"></i>
+                    <h2 class="text-lg font-semibold text-white">ตารางรายชื่อผู้ลงทะเบียนจากระบบกิลด์ (96 คน)</h2>
+                </div>
+                <!-- Interactive Tabs -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterType('all')" class="tab-btn px-3.5 py-1.5 bg-indigo-600 text-white rounded-xl text-xs font-medium hover:bg-indigo-500 transition-all">ทั้งหมด</button>
+                    <button onclick="filterType('party')" class="tab-btn px-3.5 py-1.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-medium hover:bg-slate-700 transition-all">เฉพาะคนมีตี้</button>
+                    <button onclick="filterType('no-party')" class="tab-btn px-3.5 py-1.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-medium hover:bg-slate-700 transition-all">เฉพาะคนหาตี้</button>
+                    <button onclick="filterType('no-job')" class="tab-btn px-3.5 py-1.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-medium hover:bg-slate-700 transition-all">เฉพาะคนยังไม่เลือกอาชีพ</button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto max-h-[600px]">
+                <table class="w-full text-left border-collapse" id="mainTable">
+                    <thead class="bg-slate-900/80 sticky top-0 z-10 border-b border-slate-800 text-slate-400 text-xs uppercase font-semibold">
+                        <tr>
+                            <th class="py-4 px-6 text-center w-16">ลำดับ</th>
+                            <th class="py-4 px-6 w-64">ชื่อผู้เล่น / ข้อมูลเพิ่มเติม</th>
+                            <th class="py-4 px-6 w-48">อาชีพ</th>
+                            <th class="py-4 px-6">ปาร์ตี้ / สมาชิกในทีม</th>
+                            <th class="py-4 px-6 text-center w-48">สถานะ Member (Tticc)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/50 text-sm text-slate-300" id="tableBody">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-6 py-4 bg-slate-900/40 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                <p id="rowCountDisplay">กำลังแสดงผลแบบ Real-time</p>
+                <p>แหล่งข้อมูล: ROWGuild.xlsx</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // แปลงชุดข้อมูลจากไฟล์ Excel ล่าสุด
+        const usersData = [
+            { id: 1, name: "เชฟ", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 2, name: "Isora", job: "วิ", isMember: true, memberDetail: "Isora", party: "yes", partyWith: "ตี้ตัวเอง" },
+            { id: 3, name: "Boottoys", job: "แอส", isMember: true, memberDetail: "Boottoys", party: "yes", partyWith: "ReDong" },
+            { id: 4, name: "ReDong", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "Boottoys" },
+            { id: 5, name: "คุณพ่อเอก", job: "พระ", isMember: true, memberDetail: "Papa", party: "no", partyWith: "" },
+            { id: 6, name: "HAZE", job: "?", isMember: true, memberDetail: "HAZE", party: "no", partyWith: "" },
+            { id: 7, name: "Chainoi", job: "ฮัน", isMember: true, memberDetail: "Chainoi", party: "no", partyWith: "" },
+            { id: 8, name: "BEN", job: "?", isMember: true, memberDetail: "thunmalaithong", party: "yes", partyWith: "BTS" },
+            { id: 9, name: "Dr.int", job: "ฮัน", isMember: true, memberDetail: "มหาทุย ตื่นธรรม", party: "no", partyWith: "" },
+            { id: 10, name: "Marbelz", job: "?", isMember: true, memberDetail: "zcretnutto", party: "no", partyWith: "" },
+            { id: 11, name: "Azery", job: "ไนท์", isMember: true, memberDetail: "Worrapon Azery", party: "no", partyWith: "" },
+            { id: 12, name: "Mume", job: "แอส", isMember: true, memberDetail: "Musame pro", party: "no", partyWith: "" },
+            { id: 13, name: "CTYz", job: "?", isMember: true, memberDetail: "CTY z", party: "no", partyWith: "" },
+            { id: 14, name: "Freelancer", job: "?", isMember: true, memberDetail: "ฟรีแลนซ์", party: "no", partyWith: "" },
+            { id: 15, name: "PieR2", job: "?", isMember: true, memberDetail: "Siradit", party: "no", partyWith: "" },
+            { id: 16, name: "OyakoDon", job: "พระ", isMember: true, memberDetail: "Quawell", party: "yes", partyWith: "UnaDon, Gyudon, SlrWat" },
+            { id: 17, name: "UnaDon", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "OyakoDon, Gyudon, SlrWat" },
+            { id: 18, name: "Gyudon", job: "วิ", isMember: false, memberDetail: "", party: "yes", partyWith: "OyakoDon, UnaDon, SlrWat" },
+            { id: 19, name: "SlrWat", job: "ฮัน", isMember: false, memberDetail: "", party: "yes", partyWith: "OyakoDon, UnaDon, Gyudon" },
+            { id: 20, name: "iPacc", job: "พระ", isMember: true, memberDetail: "Pacc Pacc", party: "yes", partyWith: "Satan, Ze, HypNos, AlucarD" },
+            { id: 21, name: "Satan", job: "ปืน", isMember: false, memberDetail: "", party: "yes", partyWith: "iPacc, Ze, HypNos, AlucarD" },
+            { id: 22, name: "Ze", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "iPacc, Satan, HypNos, AlucarD" },
+            { id: 23, name: "HypNos", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "iPacc, Satan, Ze, AlucarD" },
+            { id: 24, name: "AlucarD", job: "วิ", isMember: false, memberDetail: "", party: "yes", partyWith: "iPacc, Satan, Ze, HypNos" },
+            { id: 25, name: "babySweezt", job: "พระ", isMember: true, memberDetail: "Zinnot", party: "yes", partyWith: "Littlesugar" },
+            { id: 26, name: "Littlesugar", job: "ฮัน", isMember: false, memberDetail: "", party: "yes", partyWith: "babySweezt" },
+            { id: 27, name: "ประธานลาบ", job: "พระ", isMember: true, memberDetail: "pre11111", party: "yes", partyWith: "Teemo, GELBOYS, Do1313ie, Kraxes, ก๋าวววติ้ม" },
+            { id: 28, name: "Teemo", job: "แอส", isMember: false, memberDetail: "", party: "yes", partyWith: "ประธานลาบ, GELBOYS, Do1313ie" },
+            { id: 29, name: "GELBOYS", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "ประธานลาบ, Teemo, Do1313ie" },
+            { id: 30, name: "Do1313ie", job: "ฮัน", isMember: false, memberDetail: "", party: "yes", partyWith: "ประธานลาบ, Teemo, GELBOYS" },
+            { id: 31, name: "Kraxes", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "ประธานลาบ" },
+            { id: 32, name: "ก๋าวววติ้ม", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "ประธานลาบ" },
+            { id: 33, name: "Akira", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "นักท่องเที่ยว, พระอิ้ว, ตำแยแมว" },
+            { id: 34, name: "นักท่องเที่ยว", job: "ฮัน", isMember: false, memberDetail: "", party: "yes", partyWith: "Akira, พระอิ้ว, ตำแยแมว" },
+            { id: 35, name: "พระอิ้ว", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "Akira, นักท่องเที่ยว, ตำแยแมว" },
+            { id: 36, name: "ตำแยแมว", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "Akira, นักท่องเที่ยว, พระอิ้ว" },
+            { id: 37, name: "ongInwza", job: "ดรูอิด", isMember: false, memberDetail: "", party: "yes", partyWith: "kheawlnwza, tunlnwza, DoodInwza, boatlnwza" },
+            { id: 38, name: "kheawlnwza", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "ongInwza, tunlnwza, DoodInwza" },
+            { id: 39, name: "DoodInwza", job: "แอส", isMember: false, memberDetail: "", party: "yes", partyWith: "ongInwza, kheawlnwza, tunlnwza" },
+            { id: 40, name: "tunlnwza", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "ongInwza, kheawlnwza, DoodInwza" },
+            { id: 41, name: "boatlnwza", job: "ปืน", isMember: false, memberDetail: "", party: "yes", partyWith: "ongInwza" },
+            { id: 42, name: "สะแด่วแจ่วฮ้อน", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "ตะหลามวาฬ, ZaaDisz, Lวตๅa" },
+            { id: 43, name: "ตะหลามวาฬ", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "สะแด่วแจ่วฮ้อน, ZaaDisz, Lวตๅa" },
+            { id: 44, name: "ZaaDisz", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "สะแด่วแจ่วฮ้อน, ตะหลามวาฬ, Lวตๅa" },
+            { id: 45, name: "Lวตๅa", job: "?", isMember: false, memberDetail: "", party: "yes", partyWith: "สะแด่วแจ่วฮ้อน, ตะหลามวาฬ, ZaaDisz" },
+            { id: 46, name: "ISMARTI", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "IBEARI" },
+            { id: 47, name: "IBEARI", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "ISMARTI" },
+            { id: 48, name: "RuskaRoma", job: "วิ", isMember: false, memberDetail: "", party: "yes", partyWith: "Pipeburn, sick7" },
+            { id: 49, name: "Pipeburn", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "RuskaRoma, sick7" },
+            { id: 50, name: "sick7", job: "ปืน", isMember: false, memberDetail: "", party: "yes", partyWith: "RuskaRoma, Pipeburn" },
+            { id: 51, name: "KorMob", job: "ไนท์", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 52, name: "บุทด้า", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 53, name: "Thanayut37", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 54, name: "Pretty_bank", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 55, name: "พ่อเดช", job: "ฮัน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 56, name: "NobOdyX", job: "ดรูอิด", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 57, name: "Showstopper", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 58, name: "MinaMino", job: "พ่อค้า", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 59, name: "18ID", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 60, name: "SuttxN", job: "แอส", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 61, name: "Vivia", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 62, name: "Tg", job: "ไนท์", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 63, name: "YURU", job: "ฮัน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 64, name: "Serein", job: "ปืน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 65, name: "Gaster", job: "ปืนสั้น", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 66, name: "Soymilk", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 67, name: "Radisyl", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 68, name: "Asixz", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 69, name: "4TH", job: "พระ", isMember: false, memberDetail: "", party: "yes", partyWith: "2nd, 3rd" },
+            { id: 70, name: "3rd", job: "ไนท์", isMember: false, memberDetail: "", party: "yes", partyWith: "4TH, 2nd" },
+            { id: 71, name: "Winter", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 72, name: "Mechockx", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 73, name: "พร้อมแพนด้า", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 74, name: "BunBun", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 75, name: "Zulu", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 76, name: "บอท", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 77, name: "ไก่ทอดเกาหลี", job: "ดรูอิด", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 78, name: "Dion", job: "ปืน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 79, name: "MarkZa", job: "ปืน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 80, name: "Zeztz", job: "ฮัน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 81, name: "six-six", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 82, name: "mP", job: "แอส", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 83, name: "เบิร์นฮิมฮี", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 84, name: "MaLio", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 85, name: "KANOMBANK", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 86, name: "ณิชชา", job: "?", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 87, name: "Nepjuneee", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 88, name: "BornAgain", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 89, name: "Stylish", job: "แอส", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 90, name: "56", job: "วิ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 91, name: "FrozenKiss", job: "ฮัน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 92, name: "FLUKEYY", job: "พ่อค้า", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 93, name: "malinahee", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 94, name: "ICEx2", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 95, name: "FATBOY", job: "ฮัน", isMember: false, memberDetail: "", party: "no", partyWith: "" },
+            { id: 96, name: "Justmoment", job: "พระ", isMember: false, memberDetail: "", party: "no", partyWith: "" }
+        ];
+
+        const tableBody = document.getElementById("tableBody");
+        
+        function renderTable(data) {
+            tableBody.innerHTML = "";
+            data.forEach((user) => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-800/20 transition-all";
+
+                // จัดการประเภทอาชีพ
+                let jobBadge = "";
+                if (user.job === "?") {
+                    jobBadge = `<span class="px-2.5 py-1 bg-slate-500/10 text-slate-400 rounded-full text-xs border border-slate-500/20"><i class="fa-regular fa-circle-question mr-1"></i>ยังไม่เลือกอาชีพ</span>`;
+                } else if (user.job === "พระ" || user.job === "ดรูอิด") {
+                    jobBadge = `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-xs border border-emerald-500/20">${user.job}</span>`;
+                } else if (user.job === "วิ") {
+                    jobBadge = `<span class="px-2.5 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs border border-cyan-500/20">วิซาร์ด (วิ)</span>`;
+                } else if (user.job === "ฮัน" || user.job === "ปืน" || user.job === "ปืนสั้น") {
+                    jobBadge = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-full text-xs border border-amber-500/20">${user.job}</span>`;
+                } else {
+                    jobBadge = `<span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 rounded-full text-xs border border-rose-500/20">${user.job}</span>`;
+                }
+
+                // จัดการสถานะตี้
+                let partyStatus = "";
+                if (user.party === "yes") {
+                    partyStatus = `<span class="text-emerald-400 font-medium text-xs"><i class="fa-solid fa-circle-check mr-1"></i> มีปาร์ตี้แล้ว <span class="text-slate-400">(${user.partyWith})</span></span>`;
+                } else {
+                    partyStatus = `<span class="text-rose-400 font-medium text-xs"><i class="fa-solid fa-circle-xmark mr-1"></i> กำลังหาตี้ (ว่างงาน)</span>`;
+                }
+
+                // สมาชิกระดับ VIP / Member ช่อง
+                let memberStatus = "";
+                if (user.isMember) {
+                    memberStatus = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-full text-xs font-medium border border-amber-500/20"><i class="fa-solid fa-star mr-1"></i> ${user.memberDetail}</span>`;
+                } else {
+                    memberStatus = `<span class="text-slate-600">-</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-center text-slate-500">${user.id}</td>
+                    <td class="py-4 px-6"><span class="font-semibold text-white text-base">${user.name}</span></td>
+                    <td class="py-4 px-6">${jobBadge}</td>
+                    <td class="py-4 px-6">${partyStatus}</td>
+                    <td class="py-4 px-6 text-center">${memberStatus}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+            updateRowCount();
+        }
+
+        renderTable(usersData);
+
+        // ระบบตัวค้นหาแบบเรียลไทม์
+        function filterTable() {
+            applyFilters();
+        }
+
+        let currentType = "all";
+        function filterType(type) {
+            currentType = type;
+            const buttons = document.querySelectorAll(".tab-btn");
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-slate-400');
+            event.target.classList.add('bg-indigo-600', 'text-white');
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            let filtered = usersData;
+            const query = document.getElementById("searchInput").value.toLowerCase();
+
+            if (query) {
+                filtered = filtered.filter(user => 
+                    user.name.toLowerCase().includes(query) || 
+                    user.job.toLowerCase().includes(query) || 
+                    user.partyWith.toLowerCase().includes(query)
+                );
+            }
+
+            if (currentType === "party") {
+                filtered = filtered.filter(user => user.party === "yes");
+            } else if (currentType === "no-party") {
+                filtered = filtered.filter(user => user.party === "no");
+            } else if (currentType === "no-job") {
+                filtered = filtered.filter(user => user.job === "?");
+            }
+
+            renderTable(filtered);
+        }
+
+        function updateRowCount() {
+            const count = tableBody.getElementsByTagName("tr").length;
+            document.getElementById("rowCountDisplay").innerText = `แสดงผลรายชื่อปัจจุบัน: ${count} จากทั้งหมด 96 คน`;
+        }
+    </script>
+</body>
+</html>
